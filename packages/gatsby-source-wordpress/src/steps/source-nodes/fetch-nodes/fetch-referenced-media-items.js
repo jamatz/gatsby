@@ -13,6 +13,7 @@ import urlUtil from "url"
 import path from "path"
 import { getPluginOptions } from "~/utils/get-gatsby-api"
 import { formatLogMessage } from "~/utils/format-log-message"
+import { getPlaceholderUrlFromMediaItemNode } from "../create-nodes/process-node"
 
 const nodeFetchConcurrency = 2
 
@@ -179,6 +180,11 @@ export const createMediaItemNode = async ({
         )
       }
 
+      const placeholderUrl = getPlaceholderUrlFromMediaItemNode(
+        node,
+        pluginOptions
+      )
+
       node = {
         ...node,
         url: node.sourceUrl,
@@ -188,8 +194,7 @@ export const createMediaItemNode = async ({
         filesize: node.mediaDetails.fileSize,
         width: node.mediaDetails.width,
         height: node.mediaDetails.height,
-        placeholderUrl:
-          node.mediaDetails.sizes?.[0]?.sourceUrl ?? node.sourceUrl,
+        placeholderUrl: placeholderUrl ?? node.sourceUrl,
         parent: null,
         internal: {
           contentDigest: createContentDigest(node),
