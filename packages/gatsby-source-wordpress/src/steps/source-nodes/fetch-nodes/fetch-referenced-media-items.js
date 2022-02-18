@@ -412,7 +412,7 @@ export const fetchMediaItemsBySourceUrl = async ({
           )
 
           nodes.forEach((node, index) => {
-            if (!node) {
+            if (!node || !node?.localFile?.id) {
               return
             }
 
